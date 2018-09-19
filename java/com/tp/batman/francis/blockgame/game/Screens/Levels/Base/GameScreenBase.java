@@ -1,4 +1,4 @@
-package com.tp.batman.francis.blockgame.game.Screens;
+package com.tp.batman.francis.blockgame.game.Screens.Levels.Base;
 
 import android.annotation.SuppressLint;
 
@@ -11,14 +11,11 @@ import com.tp.batman.francis.blockgame.framework.impl.GLScreen;
 import com.tp.batman.francis.blockgame.framework.math.OverlapTester;
 import com.tp.batman.francis.blockgame.framework.math.Vector2;
 import com.tp.batman.francis.blockgame.game.Assets.Assets;
-
 import com.tp.batman.francis.blockgame.game.Assets.Text;
-import com.tp.batman.francis.blockgame.game.GameObjects.GameBoard;
 import com.tp.batman.francis.blockgame.game.Screens.OverlayMenues.PauseMenu;
 import com.tp.batman.francis.blockgame.game.Screens.OverlayMenues.SettingMenu;
 import com.tp.batman.francis.blockgame.game.Settings.SoundController;
 import com.tp.batman.francis.blockgame.game.Sprites.Button;
-import com.tp.batman.francis.blockgame.game.Sprites.Sprite;
 
 import java.util.List;
 
@@ -28,16 +25,16 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by franc on 2017-01-18.
  */
 
-public class GameScreen extends GLScreen {
+public class GameScreenBase extends GLScreen {
 
 
     // ####################
     // ALL
     // ####################
-    Camera2D guiCam;
-    SpriteBatcher batcher;
-    Vector2 touchPoint;
-    FPSCounter fpsCounter = new FPSCounter();
+    protected Camera2D guiCam;
+    protected SpriteBatcher batcher;
+    protected Vector2 touchPoint;
+    protected FPSCounter fpsCounter = new FPSCounter();
 
     public static int state;
     public static final int LOADING_STATE = 0;
@@ -47,9 +44,7 @@ public class GameScreen extends GLScreen {
     public static final int FINISHED_STATE = 4;
     public static final int SETTING_STATE = 5;
 
-    float stateTime = 3;
-
-    Sprite backgroundSprite;
+    protected float stateTime = 3;
 
     // ####################
     // LOADING STATE
@@ -59,23 +54,22 @@ public class GameScreen extends GLScreen {
     // ####################
     // READY STATE
     // ####################
-    private int flashToStartCounter;
-    private int flashToStartSpeed;
-    private Text touchScreenToStart;
-    private Button pressToStartButton;
+    protected int flashToStartCounter;
+    protected int flashToStartSpeed;
+    protected Text touchScreenToStart;
+    protected Button pressToStartButton;
 
 
     // ####################
     // RUNNING STATE
     // ####################
-    GameBoard gameBoard;
 
 
     // ####################
     // PAUSED STATE
     // ####################
-    Button pauseButton;
-    PauseMenu pauseMenu;
+    protected Button pauseButton;
+    protected PauseMenu pauseMenu;
 
 
     // ####################
@@ -86,18 +80,16 @@ public class GameScreen extends GLScreen {
     // ####################
     // SETTING STATE
     // ####################
-    SettingMenu settingMenu;
+    protected SettingMenu settingMenu;
 
 
-    public GameScreen(Game game) {
+    public GameScreenBase(Game game) {
         super(game);
         guiCam = new Camera2D(glGraphics, 800, 1280); // Screen resolution 1280x800
         batcher = new SpriteBatcher(glGraphics, 1000); // A maximum of 100 sprite per batch
         touchPoint = new Vector2();
 
         state = READY_STATE;
-
-        backgroundSprite = new Sprite(Assets.gameScreenAssets.gameScreenBackgroundTexture, Assets.gameScreenAssets.gameScreenBackground, 400, 640, Assets.gameScreenAssets.gameScreenBackground.width, Assets.gameScreenAssets.gameScreenBackground.height);
 
         pauseButton = new Button(75, 1205, Assets.buttonsAssets.pause_button.width*3, Assets.buttonsAssets.pause_button.height*3, Assets.buttonsAssets.buttonsTexture, Assets.buttonsAssets.pause_button, Assets.buttonsAssets.pause_button_pressed);
         pauseButton.getBounds().setWidth(Assets.buttonsAssets.pause_button.width*4);
@@ -110,15 +102,6 @@ public class GameScreen extends GLScreen {
         flashToStartSpeed = 60;
         touchScreenToStart = new Text("Touch the screen to start the game", 14, "white", "center", 0, 640, 800, true);
         pressToStartButton = new Button(400, 640, 800, 1280, null, null, null);
-
-        SoundController.requestSong("Chiptronical.ogg");
-
-
-        // READY STATE
-        gameBoard = new GameBoard();
-
-
-
     }
 
 
@@ -419,14 +402,7 @@ public class GameScreen extends GLScreen {
 
         // Initiates everything needed to render sprites
         GL10 gl = glGraphics.getGL();
-        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        guiCam.setViewportAndMatrices();
-
-        gl.glEnable(GL10.GL_TEXTURE_2D);
-
-        gl.glEnable(GL10.GL_BLEND);
-        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        setupGl(gl);
 
         // render here
 
@@ -441,17 +417,8 @@ public class GameScreen extends GLScreen {
 
         // Initiates everything needed to render sprites
         GL10 gl = glGraphics.getGL();
-        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        guiCam.setViewportAndMatrices();
+        setupGl(gl);
 
-        gl.glEnable(GL10.GL_TEXTURE_2D);
-
-        gl.glEnable(GL10.GL_BLEND);
-        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-
-        // render here
-        backgroundSprite.render(batcher);
 
         if (flashToStartCounter > (flashToStartSpeed/3)) {
             touchScreenToStart.render(batcher);
@@ -467,17 +434,8 @@ public class GameScreen extends GLScreen {
 
         // Initiates everything needed to render sprites
         GL10 gl = glGraphics.getGL();
-        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        guiCam.setViewportAndMatrices();
+        setupGl(gl);
 
-        gl.glEnable(GL10.GL_TEXTURE_2D);
-
-        gl.glEnable(GL10.GL_BLEND);
-        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-
-        // render here
-        backgroundSprite.render(batcher);
         pauseButton.render(batcher);
 
 
@@ -492,17 +450,8 @@ public class GameScreen extends GLScreen {
     public void presentPause(float deltaTime){
         // Initiates everything needed to render sprites
         GL10 gl = glGraphics.getGL();
-        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        guiCam.setViewportAndMatrices();
+        setupGl(gl);
 
-        gl.glEnable(GL10.GL_TEXTURE_2D);
-
-        gl.glEnable(GL10.GL_BLEND);
-        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-
-        // render here
-        backgroundSprite.render(batcher);
 
         pauseMenu.render(batcher);
         // Stop rendering
@@ -513,17 +462,8 @@ public class GameScreen extends GLScreen {
     public void presentFinished(float deltaTime) {
         // Initiates everything needed to render sprites
         GL10 gl = glGraphics.getGL();
-        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        guiCam.setViewportAndMatrices();
+        setupGl(gl);
 
-        gl.glEnable(GL10.GL_TEXTURE_2D);
-
-        gl.glEnable(GL10.GL_BLEND);
-        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-
-        // render here
-        backgroundSprite.render(batcher);
 
         // Stop rendering
         gl.glDisable(GL10.GL_BLEND);
@@ -532,17 +472,7 @@ public class GameScreen extends GLScreen {
     @SuppressLint("FloatMath")
     public void presentSetting(float deltaTime) {
         GL10 gl = glGraphics.getGL();
-        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        guiCam.setViewportAndMatrices();
-
-        gl.glEnable(GL10.GL_TEXTURE_2D);
-
-        gl.glEnable(GL10.GL_BLEND);
-        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-
-        // render here
-        backgroundSprite.render(batcher);
+        setupGl(gl);
 
         settingMenu.render(batcher);
 
@@ -556,6 +486,52 @@ public class GameScreen extends GLScreen {
         presentRunning(deltaTime);
     }
 
+
+
+    // ######################################################################################
+
+    @SuppressLint("FloatMath")
+    public void presentLoadingInitialized(){
+
+    }
+
+    @SuppressLint("FloatMath")
+    public void presentReadyInitialized(){
+        if (flashToStartCounter > (flashToStartSpeed/3)) {
+            touchScreenToStart.render(batcher);
+        }
+    }
+
+    @SuppressLint("FloatMath")
+    public void presentRunningInitialized(){
+        pauseButton.render(batcher);
+    }
+
+    @SuppressLint("FloatMath")
+    public void presentPauseInitialized(){
+        pauseMenu.render(batcher);
+    }
+
+    @SuppressLint("FloatMath")
+    public void presentFinishedInitialized() {
+
+    }
+
+    @SuppressLint("FloatMath")
+    public void presentSettingInitialized() {
+        settingMenu.render(batcher);
+    }
+
+
+    @SuppressLint("FloatMath")
+    public void presentChangeInitialized(){
+        presentRunningInitialized();
+    }
+
+    // ######################################################################################
+
+
+
     @Override
     public void pause(){
     }
@@ -566,5 +542,18 @@ public class GameScreen extends GLScreen {
 
     @Override
     public void dispose(){
+    }
+
+    // useful methods
+
+    protected void setupGl(GL10 gl) {
+        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        guiCam.setViewportAndMatrices();
+
+        gl.glEnable(GL10.GL_TEXTURE_2D);
+
+        gl.glEnable(GL10.GL_BLEND);
+        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
     }
 }

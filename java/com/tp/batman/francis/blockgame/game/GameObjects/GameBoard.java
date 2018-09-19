@@ -3,7 +3,7 @@ package com.tp.batman.francis.blockgame.game.GameObjects;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GameBoard {
+public class GameBoard {
 
     public static final int WIDTH_SIZE = 20;
     public static final int HEIGHT_SIZE = 60;

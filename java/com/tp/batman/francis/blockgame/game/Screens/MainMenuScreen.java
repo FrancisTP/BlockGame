@@ -12,6 +12,7 @@ import com.tp.batman.francis.blockgame.framework.impl.GLScreen;
 import com.tp.batman.francis.blockgame.framework.math.OverlapTester;
 import com.tp.batman.francis.blockgame.framework.math.Vector2;
 import com.tp.batman.francis.blockgame.game.Assets.Assets;
+import com.tp.batman.francis.blockgame.game.Screens.OverlayMenues.SettingMenu;
 import com.tp.batman.francis.blockgame.game.Settings.SoundController;
 import com.tp.batman.francis.blockgame.game.Sprites.Button;
 import com.tp.batman.francis.blockgame.game.Sprites.Sprite;
@@ -31,13 +32,13 @@ public class MainMenuScreen extends GLScreen {
 	Vector2 touchPoint;
 	FPSCounter fpsCounter = new FPSCounter();
 
-	static int state;
-	static final int LOADING_STATE = 0;
-	static final int READY_STATE = 1;
-	static final int RUNNING_STATE = 2;
-	static final int PAUSED_STATE = 3;
-	static final int FINISHED_STATE = 4;
-	static final int SETTING_STATE = 5;
+	public static int state;
+	public static final int LOADING_STATE = 0;
+	public static final int READY_STATE = 1;
+	public static final int RUNNING_STATE = 2;
+	public static final int PAUSED_STATE = 3;
+	public static final int FINISHED_STATE = 4;
+	public static final int SETTING_STATE = 5;
 
 	Sprite backgroundSprite;
 
@@ -129,7 +130,7 @@ public class MainMenuScreen extends GLScreen {
 				if (OverlapTester.pointInRectangle(playButton.getBounds(), touchPoint)) {
 					SoundController.stopMusic();
 					SoundController.stopAllSoundEffects();
-					game.setScreen(new LoadingScreen(glGame, "GameScreen"));
+					game.setScreen(new LoadingScreen(glGame, "BaseLevel"));
 				}
 
 				if (OverlapTester.pointInRectangle(settingsButton.getBounds(), touchPoint)) {

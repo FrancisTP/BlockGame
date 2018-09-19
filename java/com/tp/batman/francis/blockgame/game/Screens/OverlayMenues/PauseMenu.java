@@ -1,7 +1,5 @@
-package com.tp.batman.francis.blockgame.game.Screens;
+package com.tp.batman.francis.blockgame.game.Screens.OverlayMenues;
 
-
-import android.util.Log;
 
 import com.tp.batman.francis.blockgame.framework.Game;
 import com.tp.batman.francis.blockgame.framework.Input;
@@ -9,10 +7,12 @@ import com.tp.batman.francis.blockgame.framework.gl.Camera2D;
 import com.tp.batman.francis.blockgame.framework.gl.SpriteBatcher;
 import com.tp.batman.francis.blockgame.framework.impl.GLGame;
 import com.tp.batman.francis.blockgame.framework.math.OverlapTester;
-import com.tp.batman.francis.blockgame.framework.math.Rectangle;
 import com.tp.batman.francis.blockgame.framework.math.Vector2;
 import com.tp.batman.francis.blockgame.game.Assets.Assets;
 import com.tp.batman.francis.blockgame.game.Assets.Text;
+import com.tp.batman.francis.blockgame.game.Screens.GameScreen;
+import com.tp.batman.francis.blockgame.game.Screens.Levels.Base.GameScreenBase;
+import com.tp.batman.francis.blockgame.game.Screens.LoadingScreen;
 import com.tp.batman.francis.blockgame.game.Settings.SoundController;
 import com.tp.batman.francis.blockgame.game.Sprites.Button;
 
@@ -81,11 +81,13 @@ public class PauseMenu {
 
                 if(OverlapTester.pointInRectangle(resumeButton.getBounds(), touchPoint)) {
                     resumeButton.setState(Button.BOUNDS_NOT_TOUCHED);
-                    GameScreen.state = GameScreen.RUNNING_STATE;
+                    GameScreenBase.state = GameScreenBase.RUNNING_STATE;
+                    GameScreen.state = GameScreen.RUNNING_STATE; // to be removed
                 }
                 if(OverlapTester.pointInRectangle(settingButton.getBounds(), touchPoint)) {
                     settingButton.setState(Button.BOUNDS_NOT_TOUCHED);
-                    GameScreen.state = GameScreen.SETTING_STATE;
+                    GameScreenBase.state = GameScreenBase.SETTING_STATE;
+                    GameScreen.state = GameScreen.SETTING_STATE; // to be removed
                 }
                 if(OverlapTester.pointInRectangle(quitButton.getBounds(), touchPoint)) {
                     quitButton.setState(Button.BOUNDS_NOT_TOUCHED);

@@ -54,6 +54,8 @@ public class Assets {
             loadMainMenu(glGame);
         } else if (onScreen.equals("GameScreen")) {
             loadGameScreen(glGame);
+        } else if (onScreen.equals("BaseLevel")) {
+            loadGameScreen(glGame);
         }
     }
 
@@ -65,6 +67,8 @@ public class Assets {
             reloadMainMenu();
         } else if (onScreen.equals("GameScreen")) {
             reloadGameScreen();
+        } else if (onScreen.equals("BaseLevel")) {
+            reloadGameScreen();
         }
     }
 
@@ -74,6 +78,8 @@ public class Assets {
         if(onScreen.equals("MainMenuScreen")) {
             disposeMainMenu();
         } else if (onScreen.equals("GameScreen")) {
+            disposeGameScreen();
+        } else if (onScreen.equals("BaseLevel")) {
             disposeGameScreen();
         }
     }
@@ -85,6 +91,8 @@ public class Assets {
             clearMainMenu();
         } else if (onScreen.equals("GameScreen")) {
             clearGameScreen();
+        } else if (onScreen.equals("BaseLevel")) {
+            disposeGameScreen();
         }
     }
 

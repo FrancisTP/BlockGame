@@ -11,6 +11,7 @@ import com.tp.batman.francis.blockgame.framework.gl.SpriteBatcher;
 import com.tp.batman.francis.blockgame.framework.impl.GLScreen;
 import com.tp.batman.francis.blockgame.framework.math.Vector2;
 import com.tp.batman.francis.blockgame.game.Assets.Assets;
+import com.tp.batman.francis.blockgame.game.Screens.Levels.BaseLevel;
 import com.tp.batman.francis.blockgame.game.Settings.SoundController;
 
 import java.util.List;
@@ -94,6 +95,8 @@ public class LoadingScreen extends GLScreen {
                 game.setScreen(new MainMenuScreen(game));
             } else if (screenToLoad.equals("GameScreen")) {
                 game.setScreen(new GameScreen(game));
+            } else if (screenToLoad.equals("BaseLevel")) {
+                game.setScreen(new BaseLevel(game));
             }
 
         }

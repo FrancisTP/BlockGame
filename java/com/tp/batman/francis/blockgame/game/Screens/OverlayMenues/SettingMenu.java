@@ -1,4 +1,4 @@
-package com.tp.batman.francis.blockgame.game.Screens;
+package com.tp.batman.francis.blockgame.game.Screens.OverlayMenues;
 
 import com.tp.batman.francis.blockgame.framework.Game;
 import com.tp.batman.francis.blockgame.framework.Input;
@@ -9,6 +9,9 @@ import com.tp.batman.francis.blockgame.framework.math.OverlapTester;
 import com.tp.batman.francis.blockgame.framework.math.Vector2;
 import com.tp.batman.francis.blockgame.game.Assets.Assets;
 import com.tp.batman.francis.blockgame.game.Assets.Text;
+import com.tp.batman.francis.blockgame.game.Screens.GameScreen;
+import com.tp.batman.francis.blockgame.game.Screens.Levels.Base.GameScreenBase;
+import com.tp.batman.francis.blockgame.game.Screens.MainMenuScreen;
 import com.tp.batman.francis.blockgame.game.Screens.MenueObjects.Slider;
 import com.tp.batman.francis.blockgame.game.Settings.Saves;
 import com.tp.batman.francis.blockgame.game.Settings.SoundController;
@@ -98,6 +101,8 @@ public class SettingMenu {
                         MainMenuScreen.state = MainMenuScreen.RUNNING_STATE;
                     } else if (Assets.onScreen == "GameScreen") {
                         GameScreen.state = GameScreen.PAUSED_STATE;
+                    } else if (Assets.onScreen == "BaseLevel") {
+                        GameScreenBase.state = GameScreenBase.PAUSED_STATE;
                     }
                 }
 
