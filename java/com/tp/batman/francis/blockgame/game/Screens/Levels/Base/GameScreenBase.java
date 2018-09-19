@@ -140,11 +140,11 @@ public class GameScreenBase extends GLScreen {
         //Log.d("deltaTime", "" + time);
     }
 
-    private void updateLoadingState(float deltaTime) {
+    protected void updateLoadingState(float deltaTime) {
 
     }
 
-    private void updateReadyState(float deltaTime) {
+    protected void updateReadyState(float deltaTime) {
         flashToStartCounter++;
 
         if (flashToStartCounter > flashToStartSpeed) {
@@ -152,7 +152,7 @@ public class GameScreenBase extends GLScreen {
         }
     }
 
-    private void updateRunningState(float deltaTime) {
+    protected void updateRunningState(float deltaTime) {
         if (!SoundController.getShouldMusicBePlaying()) {
             SoundController.resumeMusic(); // music should always be playing, user can put volume down for no music
         }
@@ -161,18 +161,53 @@ public class GameScreenBase extends GLScreen {
 
     }
 
-    private void updatePausedState(float deltaTime) {
+    protected void updatePausedState(float deltaTime) {
         pauseMenu.update(deltaTime, 0);
     }
 
-    private void updateFinishedState(float deltaTime) {
+    protected void updateFinishedState(float deltaTime) {
 
     }
 
-    private void updateSettingState(float deltaTime) {
+    protected void updateSettingState(float deltaTime) {
         settingMenu.update(deltaTime);
     }
 
+
+
+    // BASE
+
+
+    protected void updateLoadingStateBase(float deltaTime) {
+
+    }
+
+    protected void updateReadyStateBase(float deltaTime) {
+        flashToStartCounter++;
+
+        if (flashToStartCounter > flashToStartSpeed) {
+            flashToStartCounter = 0;
+        }
+    }
+
+    protected void updateRunningStateBase(float deltaTime) {
+        if (!SoundController.getShouldMusicBePlaying()) {
+            SoundController.resumeMusic(); // music should always be playing, user can put volume down for no music
+        }
+
+    }
+
+    protected void updatePausedStateBase(float deltaTime) {
+        pauseMenu.update(deltaTime, 0);
+    }
+
+    protected void updateFinishedStateBase(float deltaTime) {
+
+    }
+
+    protected void updateSettingStateBase(float deltaTime) {
+        settingMenu.update(deltaTime);
+    }
 
     // ################################################################################################################################
     // ################################################################################################################################
@@ -195,7 +230,7 @@ public class GameScreenBase extends GLScreen {
     }
 
 
-    private void listenToTouchesLoadingState(List<Input.TouchEvent> touchEvents, float deltaTime) {
+    protected void listenToTouchesLoadingState(List<Input.TouchEvent> touchEvents, float deltaTime) {
         int len = touchEvents.size();
         for(int i=0; i<len; i++){
             Input.TouchEvent event = touchEvents.get(i);
@@ -222,7 +257,7 @@ public class GameScreenBase extends GLScreen {
         }
     }
 
-    private void listenToTouchesReadyState(List<Input.TouchEvent> touchEvents, float deltaTime) {
+    protected void listenToTouchesReadyState(List<Input.TouchEvent> touchEvents, float deltaTime) {
         int len = touchEvents.size();
         for(int i=0; i<len; i++){
             Input.TouchEvent event = touchEvents.get(i);
@@ -251,7 +286,7 @@ public class GameScreenBase extends GLScreen {
         }
     }
 
-    private void listenToTouchesRunningState(List<Input.TouchEvent> touchEvents, float deltaTime) {
+    protected void listenToTouchesRunningState(List<Input.TouchEvent> touchEvents, float deltaTime) {
         int len = touchEvents.size();
         for(int i=0; i<len; i++){
             Input.TouchEvent event = touchEvents.get(i);
@@ -291,7 +326,7 @@ public class GameScreenBase extends GLScreen {
         }
     }
 
-    private void listenToTouchesPausedState(List<Input.TouchEvent> touchEvents, float deltaTime) {
+    protected void listenToTouchesPausedState(List<Input.TouchEvent> touchEvents, float deltaTime) {
         int len = touchEvents.size();
         for(int i=0; i<len; i++){
             Input.TouchEvent event = touchEvents.get(i);
@@ -319,7 +354,7 @@ public class GameScreenBase extends GLScreen {
         }
     }
 
-    private void listenToTouchesFinishedState(List<Input.TouchEvent> touchEvents, float deltaTime) {
+    protected void listenToTouchesFinishedState(List<Input.TouchEvent> touchEvents, float deltaTime) {
         int len = touchEvents.size();
         for(int i=0; i<len; i++){
             Input.TouchEvent event = touchEvents.get(i);
@@ -346,7 +381,190 @@ public class GameScreenBase extends GLScreen {
         }
     }
 
-    private void listenToTouchesSettingState(List<Input.TouchEvent> touchEvents, float deltaTime) {
+    protected void listenToTouchesSettingState(List<Input.TouchEvent> touchEvents, float deltaTime) {
+        int len = touchEvents.size();
+        for(int i=0; i<len; i++){
+            Input.TouchEvent event = touchEvents.get(i);
+
+            if(event.type == Input.TouchEvent.TOUCH_UP){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+
+            }
+            if(event.type == Input.TouchEvent.TOUCH_DOWN){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+            }
+            if(event.type == Input.TouchEvent.TOUCH_DRAGGED){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+            }
+
+
+            // subs
+            settingMenu.listenToTouches(touchEvents, touchPoint, guiCam, game, glGame);
+        }
+    }
+
+
+
+    // BASE
+
+    protected void listenToTouchesLoadingStateBase(List<Input.TouchEvent> touchEvents, float deltaTime) {
+        int len = touchEvents.size();
+        for(int i=0; i<len; i++){
+            Input.TouchEvent event = touchEvents.get(i);
+
+            if(event.type == Input.TouchEvent.TOUCH_UP){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+
+            }
+            if(event.type == Input.TouchEvent.TOUCH_DOWN){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+            }
+            if(event.type == Input.TouchEvent.TOUCH_DRAGGED){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+            }
+
+
+            // subs
+        }
+    }
+
+    protected void listenToTouchesReadyStateBase(List<Input.TouchEvent> touchEvents, float deltaTime) {
+        int len = touchEvents.size();
+        for(int i=0; i<len; i++){
+            Input.TouchEvent event = touchEvents.get(i);
+
+            if(event.type == Input.TouchEvent.TOUCH_UP){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+                if (OverlapTester.pointInRectangle(pressToStartButton.getBounds(), touchPoint)) {
+                    state = RUNNING_STATE;
+                }
+            }
+            if(event.type == Input.TouchEvent.TOUCH_DOWN){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+            }
+            if(event.type == Input.TouchEvent.TOUCH_DRAGGED){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+            }
+
+
+            // subs
+        }
+    }
+
+    protected void listenToTouchesRunningStateBase(List<Input.TouchEvent> touchEvents, float deltaTime) {
+        int len = touchEvents.size();
+        for(int i=0; i<len; i++){
+            Input.TouchEvent event = touchEvents.get(i);
+
+            if(event.type == Input.TouchEvent.TOUCH_UP){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+                pauseButton.setState(Button.BOUNDS_NOT_TOUCHED);
+
+                if (OverlapTester.pointInRectangle(pauseButton.getBounds(), touchPoint)) {
+                    state = PAUSED_STATE;
+                }
+
+            }
+            if(event.type == Input.TouchEvent.TOUCH_DOWN){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+                if(OverlapTester.pointInRectangle(pauseButton.getBounds(), touchPoint)) {
+                    pauseButton.setState(Button.BOUNDS_TOUCHED);
+                }
+
+            }
+            if(event.type == Input.TouchEvent.TOUCH_DRAGGED){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+                if (!OverlapTester.pointInRectangle(pauseButton.getBounds(), touchPoint)) {
+                    pauseButton.setState(Button.BOUNDS_NOT_TOUCHED);
+                }
+
+            }
+
+
+            // subs
+        }
+    }
+
+    protected void listenToTouchesPausedStateBase(List<Input.TouchEvent> touchEvents, float deltaTime) {
+        int len = touchEvents.size();
+        for(int i=0; i<len; i++){
+            Input.TouchEvent event = touchEvents.get(i);
+
+            if(event.type == Input.TouchEvent.TOUCH_UP){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+
+            }
+            if(event.type == Input.TouchEvent.TOUCH_DOWN){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+            }
+            if(event.type == Input.TouchEvent.TOUCH_DRAGGED){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+            }
+
+
+            // subs
+            pauseMenu.listenToTouches(touchEvents, touchPoint, guiCam, game, glGame);
+        }
+    }
+
+    protected void listenToTouchesFinishedStateBase(List<Input.TouchEvent> touchEvents, float deltaTime) {
+        int len = touchEvents.size();
+        for(int i=0; i<len; i++){
+            Input.TouchEvent event = touchEvents.get(i);
+
+            if(event.type == Input.TouchEvent.TOUCH_UP){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+
+            }
+            if(event.type == Input.TouchEvent.TOUCH_DOWN){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+            }
+            if(event.type == Input.TouchEvent.TOUCH_DRAGGED){
+                touchPoint.set(event.x, event.y);
+                guiCam.touchToWorld(touchPoint);
+
+            }
+
+
+            // subs
+        }
+    }
+
+    protected void listenToTouchesSettingStateBase(List<Input.TouchEvent> touchEvents, float deltaTime) {
         int len = touchEvents.size();
         for(int i=0; i<len; i++){
             Input.TouchEvent event = touchEvents.get(i);
@@ -397,7 +615,7 @@ public class GameScreenBase extends GLScreen {
     }
 
     @SuppressLint("FloatMath")
-    public void presentLoading(float deltaTime){
+    protected void presentLoading(float deltaTime){
         stateTime += deltaTime; // updates stateTime if we want frame independent movement
 
         // Initiates everything needed to render sprites
@@ -412,7 +630,7 @@ public class GameScreenBase extends GLScreen {
     }
 
     @SuppressLint("FloatMath")
-    public void presentReady(float deltaTime){
+    protected void presentReady(float deltaTime){
         stateTime += deltaTime; // updates stateTime if we want frame independent movement
 
         // Initiates everything needed to render sprites
@@ -429,7 +647,7 @@ public class GameScreenBase extends GLScreen {
     }
 
     @SuppressLint("FloatMath")
-    public void presentRunning(float deltaTime){
+    protected void presentRunning(float deltaTime){
         stateTime += deltaTime; // updates stateTime if we want frame independent movement
 
         // Initiates everything needed to render sprites
@@ -447,7 +665,7 @@ public class GameScreenBase extends GLScreen {
     }
 
     @SuppressLint("FloatMath")
-    public void presentPause(float deltaTime){
+    protected void presentPause(float deltaTime){
         // Initiates everything needed to render sprites
         GL10 gl = glGraphics.getGL();
         setupGl(gl);
@@ -459,7 +677,7 @@ public class GameScreenBase extends GLScreen {
     }
 
     @SuppressLint("FloatMath")
-    public void presentFinished(float deltaTime) {
+    protected void presentFinished(float deltaTime) {
         // Initiates everything needed to render sprites
         GL10 gl = glGraphics.getGL();
         setupGl(gl);
@@ -470,7 +688,7 @@ public class GameScreenBase extends GLScreen {
     }
 
     @SuppressLint("FloatMath")
-    public void presentSetting(float deltaTime) {
+    protected void presentSetting(float deltaTime) {
         GL10 gl = glGraphics.getGL();
         setupGl(gl);
 
@@ -482,7 +700,7 @@ public class GameScreenBase extends GLScreen {
 
 
     @SuppressLint("FloatMath")
-    public void presentChange(float deltaTime){
+    protected void presentChange(float deltaTime){
         presentRunning(deltaTime);
     }
 
@@ -491,41 +709,41 @@ public class GameScreenBase extends GLScreen {
     // ######################################################################################
 
     @SuppressLint("FloatMath")
-    public void presentLoadingInitialized(){
+    protected void presentLoadingBase(){
 
     }
 
     @SuppressLint("FloatMath")
-    public void presentReadyInitialized(){
+    protected void presentReadyBase(){
         if (flashToStartCounter > (flashToStartSpeed/3)) {
             touchScreenToStart.render(batcher);
         }
     }
 
     @SuppressLint("FloatMath")
-    public void presentRunningInitialized(){
+    protected void presentRunningBase(){
         pauseButton.render(batcher);
     }
 
     @SuppressLint("FloatMath")
-    public void presentPauseInitialized(){
+    protected void presentPauseBase(){
         pauseMenu.render(batcher);
     }
 
     @SuppressLint("FloatMath")
-    public void presentFinishedInitialized() {
+    public void presentFinishedBase() {
 
     }
 
     @SuppressLint("FloatMath")
-    public void presentSettingInitialized() {
+    protected void presentSettingBase() {
         settingMenu.render(batcher);
     }
 
 
     @SuppressLint("FloatMath")
-    public void presentChangeInitialized(){
-        presentRunningInitialized();
+    protected void presentChangeBase(){
+        presentRunningBase();
     }
 
     // ######################################################################################

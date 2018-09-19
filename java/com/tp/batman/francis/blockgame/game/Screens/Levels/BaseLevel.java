@@ -6,9 +6,13 @@ import android.util.Log;
 import com.tp.batman.francis.blockgame.framework.Game;
 import com.tp.batman.francis.blockgame.game.Assets.Assets;
 import com.tp.batman.francis.blockgame.game.GameObjects.GameBoard;
+import com.tp.batman.francis.blockgame.game.GameObjects.GameBoard_old;
+import com.tp.batman.francis.blockgame.game.GameObjects.ShapeController;
 import com.tp.batman.francis.blockgame.game.Screens.Levels.Base.GameScreenBase;
 import com.tp.batman.francis.blockgame.game.Settings.SoundController;
 import com.tp.batman.francis.blockgame.game.Sprites.Sprite;
+
+import java.util.Random;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -27,6 +31,7 @@ public class BaseLevel extends GameScreenBase {
     // RUNNING STATE
     // ####################
     GameBoard gameBoard;
+    ShapeController shapeController;
 
 
     // ===================================================================
@@ -40,6 +45,7 @@ public class BaseLevel extends GameScreenBase {
 
         // READY STATE
         gameBoard = new GameBoard();
+        shapeController = new ShapeController(gameBoard);
 
         SoundController.requestSong("Chiptronical.ogg");
     }
@@ -64,7 +70,27 @@ public class BaseLevel extends GameScreenBase {
     // UPDATING
     // ###################################################################
 
+    @Override
+    protected void updateRunningState(float deltaTime) {
+        updateRunningStateBase(deltaTime);
 
+
+        if (shapeController.getShapes().size() < gameBoard.MAX_SHAPE_COUNT) {
+            Random r = new Random();
+            int createBlockNum = 0 + r.nextInt((3 - 0) + 1);
+            boolean createBlock = false;
+            if (createBlockNum == 3) {
+                createBlock = true;
+            }
+
+            if (createBlock) {
+                shapeController.createNewShape();
+            }
+        }
+
+
+        shapeController.update(deltaTime);
+    }
 
     // ===================================================================
     // ===================================================================
@@ -84,7 +110,7 @@ public class BaseLevel extends GameScreenBase {
         setupGl(gl);
 
         // This contains all the boring things (buttons, text, etc)
-        presentLoadingInitialized();
+        presentLoadingBase();
 
         // Stop rendering
         gl.glDisable(GL10.GL_BLEND);
@@ -103,7 +129,7 @@ public class BaseLevel extends GameScreenBase {
         backgroundSprite.render(batcher);
 
         // This contains all the boring things (buttons, text, etc)
-        presentReadyInitialized();
+        presentReadyBase();
 
         // Stop rendering
         gl.glDisable(GL10.GL_BLEND);
@@ -121,8 +147,11 @@ public class BaseLevel extends GameScreenBase {
         // render here
         backgroundSprite.render(batcher);
 
+        gameBoard.render(batcher);
+        shapeController.render(batcher);
+
         // This contains all the boring things (buttons, text, etc)
-        presentRunningInitialized();
+        presentRunningBase();
 
 
         // Stop rendering
@@ -143,7 +172,7 @@ public class BaseLevel extends GameScreenBase {
         backgroundSprite.render(batcher);
 
         // This contains all the boring things (buttons, text, etc)
-        presentPauseInitialized();
+        presentPauseBase();
 
         // Stop rendering
         gl.glDisable(GL10.GL_BLEND);
@@ -160,7 +189,7 @@ public class BaseLevel extends GameScreenBase {
         backgroundSprite.render(batcher);
 
         // This contains all the boring things (buttons, text, etc)
-        presentFinishedInitialized();
+        presentFinishedBase();
 
         // Stop rendering
         gl.glDisable(GL10.GL_BLEND);
@@ -178,7 +207,7 @@ public class BaseLevel extends GameScreenBase {
         backgroundSprite.render(batcher);
 
         // This contains all the boring things (buttons, text, etc)
-        presentSettingInitialized();
+        presentSettingBase();
 
         // Stop rendering
         gl.glDisable(GL10.GL_BLEND);
@@ -192,7 +221,7 @@ public class BaseLevel extends GameScreenBase {
         setupGl(gl);
 
         // This contains all the boring things (buttons, text, etc)
-        presentChangeInitialized();
+        presentChangeBase();
 
         // Stop rendering
         gl.glDisable(GL10.GL_BLEND);

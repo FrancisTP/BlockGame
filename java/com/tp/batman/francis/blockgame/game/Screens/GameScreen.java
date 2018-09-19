@@ -13,7 +13,7 @@ import com.tp.batman.francis.blockgame.framework.math.Vector2;
 import com.tp.batman.francis.blockgame.game.Assets.Assets;
 
 import com.tp.batman.francis.blockgame.game.Assets.Text;
-import com.tp.batman.francis.blockgame.game.GameObjects.GameBoard;
+import com.tp.batman.francis.blockgame.game.GameObjects.GameBoard_old;
 import com.tp.batman.francis.blockgame.game.Screens.OverlayMenues.PauseMenu;
 import com.tp.batman.francis.blockgame.game.Screens.OverlayMenues.SettingMenu;
 import com.tp.batman.francis.blockgame.game.Settings.SoundController;
@@ -68,7 +68,7 @@ public class GameScreen extends GLScreen {
     // ####################
     // RUNNING STATE
     // ####################
-    GameBoard gameBoard;
+    GameBoard_old gameBoardOld;
 
 
     // ####################
@@ -115,7 +115,7 @@ public class GameScreen extends GLScreen {
 
 
         // READY STATE
-        gameBoard = new GameBoard();
+        gameBoardOld = new GameBoard_old();
 
 
 

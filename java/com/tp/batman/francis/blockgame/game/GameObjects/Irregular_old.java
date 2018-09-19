@@ -1,9 +1,8 @@
 package com.tp.batman.francis.blockgame.game.GameObjects;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
-public class Irregular {
+public class Irregular_old {
 
 
     // limits
@@ -25,7 +24,7 @@ public class Irregular {
     public static final String RED = "red";
     public static final String YELLOW = "yellow";
 
-    private List<Block> blocks;
+    private List<Block_old> blockOlds;
     private String direction;
     private float speed;
     private String colour;
@@ -37,9 +36,9 @@ public class Irregular {
 
     private boolean shouldCollide;
 
-    public Irregular(String colour, List<Block> blocks, String direction, float speed) {
+    public Irregular_old(String colour, List<Block_old> blockOlds, String direction, float speed) {
         this.colour = colour;
-        this.blocks = blocks;
+        this.blockOlds = blockOlds;
         this.direction = direction;
         this.speed = speed;
 

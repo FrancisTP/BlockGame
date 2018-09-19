@@ -1,39 +1,63 @@
 package com.tp.batman.francis.blockgame.game.GameObjects;
 
+import com.tp.batman.francis.blockgame.framework.gl.SpriteBatcher;
+import com.tp.batman.francis.blockgame.framework.gl.Texture;
+import com.tp.batman.francis.blockgame.framework.gl.TextureRegion;
+import com.tp.batman.francis.blockgame.game.Assets.Assets;
+
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameBoard {
 
-    public static final int WIDTH_SIZE = 20;
-    public static final int HEIGHT_SIZE = 60;
+    public static final int X_SIZE = 8;
+    public static final int Y_SIZE = 11;
 
-    IrregularFactory irregularFactory;
-    private int irregularCount;
+    public static final int MAX_SHAPE_COUNT = 6;
 
-    List<Irregular> irregulars;
+    private List<HashMap<Block, List<Date>>> blockMatrix[][];
+    /* Format of the blockMatrix
+    Each cell can have a list with the following information
+        - Block
+        - List of Dates (only 2) that has
+            - Start time
+            - End time
+    */
+
+    private Texture texture;
+    private TextureRegion textureRegion;
 
     public GameBoard() {
-        irregulars = new ArrayList<>();
-        irregularCount = 0;
-        irregularFactory = new IrregularFactory();
+        blockMatrix = new ArrayList[X_SIZE][Y_SIZE];
+
+        texture = Assets.blocksAssets.blockTexture;
+        textureRegion = Assets.blocksAssets.block_outline;
     }
 
-    public void createInitialIrregularsBatch(int irregularCount, int collisionCount) {
-        this.irregularCount = irregularCount;
+    public List<HashMap<Block, List<Date>>>[][] getBlockMatrix() {
+        return blockMatrix;
+    }
 
-        int collisions = 0;
-        for (int i=0; i < irregularCount; i++) {
-            if (collisions <= collisionCount) {
-                collisions++;
-                generateShape(true);
-            } else {
-                generateShape(false);
+    public void setBlockMatrix(List<HashMap<Block, List<Date>>>[][] blockMatrix) {
+        this.blockMatrix = blockMatrix;
+    }
+
+
+    // RENDER
+    public void render(SpriteBatcher batcher) {
+        batcher.beginBatch(texture);
+        float initial_x = 0;
+        float initial_y = 0;
+
+        for (int i=0; i < blockMatrix.length; i++ ) {
+            for (int j=0; j < blockMatrix[i].length; j++) {
+                batcher.drawSprite((i*Block.WIDTH) + (Block.WIDTH / 2), (j*Block.HEIGHT) + (Block.HEIGHT / 2), Block.WIDTH, Block.HEIGHT, textureRegion);
+                //batcher.drawSprite(block.getX_bottomLeft() + (block.WIDTH / 2), block.getY_bottomLeft() + (block.HEIGHT / 2), block.WIDTH, block.HEIGHT, block.getBlockOutline());
             }
         }
-    }
 
-    public void generateShape(boolean shouldCollide) {
-        irregulars.add(irregularFactory.generateShape(shouldCollide, irregulars));
+        batcher.endBatch();
     }
 }

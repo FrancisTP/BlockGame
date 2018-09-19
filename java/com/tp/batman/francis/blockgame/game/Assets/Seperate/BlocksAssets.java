@@ -8,14 +8,17 @@ public class BlocksAssets {
 
 	private static GLGame glGame;
 
-	public static Texture blocksTexture;
+	public static Texture blockTexture;
 
-	public static TextureRegion blue_block;
-	public static TextureRegion green_block;
-	public static TextureRegion orange_block;
-	public static TextureRegion pink_block;
-	public static TextureRegion red_block;
-	public static TextureRegion yellow_block;
+	public static TextureRegion block_blueDark;
+	public static TextureRegion block_blueLight;
+	public static TextureRegion block_greenDark;
+	public static TextureRegion block_greenLight;
+	public static TextureRegion block_orangeDark;
+	public static TextureRegion block_orangeLight;
+	public static TextureRegion block_outline;
+	public static TextureRegion block_redDark;
+	public static TextureRegion block_redLight;
 
 	public static void load(GLGame game) {
 		glGame = game;
@@ -23,36 +26,42 @@ public class BlocksAssets {
 	}
 
 	public static void load() {
-		blocksTexture = new Texture (glGame, "blocks/blocksTexture.png");
+		blockTexture = new Texture (glGame, "blocks/blockTexture.png");
 
-		blue_block = new TextureRegion(blocksTexture, 2, 2, 4, 4);
-		green_block = new TextureRegion(blocksTexture, 8, 2, 4, 4);
-		orange_block = new TextureRegion(blocksTexture, 2, 8, 4, 4);
-		pink_block = new TextureRegion(blocksTexture, 8, 8, 4, 4);
-		red_block = new TextureRegion(blocksTexture, 2, 14, 4, 4);
-		yellow_block = new TextureRegion(blocksTexture, 8, 14, 4, 4);
+		block_blueDark = new TextureRegion(blockTexture, 2, 2, 10, 10);
+		block_blueLight = new TextureRegion(blockTexture, 14, 2, 10, 10);
+		block_greenDark = new TextureRegion(blockTexture, 2, 14, 10, 10);
+		block_greenLight = new TextureRegion(blockTexture, 14, 14, 10, 10);
+		block_orangeDark = new TextureRegion(blockTexture, 2, 26, 10, 10);
+		block_orangeLight = new TextureRegion(blockTexture, 14, 26, 10, 10);
+		block_outline = new TextureRegion(blockTexture, 2, 38, 10, 10);
+		block_redDark = new TextureRegion(blockTexture, 2, 50, 10, 10);
+		block_redLight = new TextureRegion(blockTexture, 14, 38, 10, 10);
 	}
 
 	public static void reload() {
-		if (blocksTexture != null) {
-			blocksTexture.reload();
+		if (blockTexture != null) {
+			blockTexture.reload();
 		}
 	}
 
 	public static void dispose() {
-		if (blocksTexture != null) {
-			blocksTexture.dispose();
+		if (blockTexture != null) {
+			blockTexture.dispose();
 		}
 	}
 
 	public static void clear() {
-		blocksTexture = null;
+		blockTexture = null;
 
-		blue_block = null;
-		green_block = null;
-		orange_block = null;
-		pink_block = null;
-		red_block = null;
-		yellow_block = null;
+		block_blueDark = null;
+		block_blueLight = null;
+		block_greenDark = null;
+		block_greenLight = null;
+		block_orangeDark = null;
+		block_orangeLight = null;
+		block_outline = null;
+		block_redDark = null;
+		block_redLight = null;
 	}
 }

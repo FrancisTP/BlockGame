@@ -3,18 +3,18 @@ package com.tp.batman.francis.blockgame.game.GameObjects;
 import java.util.List;
 import java.util.Random;
 
-public class IrregularFactory {
+public class IrregularFactory_old {
 
     public static final String TOP = "TOP";
     public static final String BOTTOM = "BOTTOM";
     public static final String LEFT = "LEFT";
     public static final String RIGHT = "RIGHT";
 
-    public IrregularFactory() {
+    public IrregularFactory_old() {
 
     }
 
-    public Irregular generateShape(boolean shouldCollide, List<Irregular> irregulars) {
+    public Irregular_old generateShape(boolean shouldCollide, List<Irregular_old> irregularOlds) {
 
         Random rand = new Random();
         /*
