@@ -16,7 +16,7 @@ public class Shape {
     public static final int MAX_BLOCK_COUNT = 4;
     public static final int MIN_BLOCK_COUNT = 1;
     public static final float MIN_SPEED = 2;
-    public static final float MAX_SPEED = 10;
+    public static final float MAX_SPEED = 8;
 
     private String orientation;
     private List<Block> blocks;
@@ -25,12 +25,16 @@ public class Shape {
     private float speed;
     private String colour;
     private boolean inCollision;
+    private int track;
+    private String initialPos;
 
     public Shape(String orientation, int track, String initialPos, int blockCount, float speed) {
         this.orientation = orientation;
+        this.track = track;
+        this.initialPos = initialPos;
 
         if (orientation.equals(HORIZONTAL)) {
-            if (track > GameBoard.X_SIZE + 1 || track < 1) {
+            if (track > GameBoard.Y_SIZE + 1 || track < 1) {
                 Log.d("Shape.java: " , "Could not initialize shape, shape track invalid");
                 float error = 1/0;
             } else if (initialPos.equals(PLUS)) {
@@ -44,7 +48,7 @@ public class Shape {
                 float error = 1/0;
             }
         } else if (orientation.equals(VERTICAL)) {
-            if (track > GameBoard.Y_SIZE + 1 || track < 1) {
+            if (track > GameBoard.X_SIZE + 1 || track < 1) {
                 Log.d("Shape.java: " , "Could not initialize shape, shape track invalid");
                 float error = 1/0;
             } else if (initialPos.equals(PLUS)) {
@@ -136,6 +140,21 @@ public class Shape {
         this.inCollision = inCollision;
     }
 
+    public int getTrack() {
+        return track;
+    }
+
+    public void setTrack(int track) {
+        this.track = track;
+    }
+
+    public String getInitialPos() {
+        return initialPos;
+    }
+
+    public void setInitialPos(String initialPos) {
+        this.initialPos = initialPos;
+    }
 
     //=============================================================
     // update methods

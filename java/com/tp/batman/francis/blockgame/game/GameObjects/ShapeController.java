@@ -13,6 +13,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class ShapeController {
 
+    private static final int RETRIES = 3;
+
     private List<Shape> shapes;
     private Random r;
     GameBoard gameBoard;
@@ -37,14 +39,6 @@ public class ShapeController {
 
         int orientationNum = 0 + r.nextInt((1 - 0) + 1);
         String orientation = "";
-        int track = 0;
-        if (orientationNum == 0) {
-            orientation = Shape.HORIZONTAL;
-            track = 0 + r.nextInt((gameBoard.X_SIZE - 0) + 1) + 1;
-        } else if (orientationNum == 1) {
-            orientation = Shape.VERTICAL;
-            track = 0 + r.nextInt((gameBoard.Y_SIZE - 0) + 1) + 1;
-        }
 
         int initialPosNum = 0 + r.nextInt((1- 0) + 1);
         String initialPos = "";
@@ -53,6 +47,69 @@ public class ShapeController {
         } else if (initialPosNum == 1) {
             initialPos = Shape.PLUS;
         }
+
+        int track = 0;
+        int retryCount = 0;
+        boolean keepGoing = true;
+        do {
+            keepGoing = true;
+            if (orientationNum == 0) {
+                orientation = Shape.HORIZONTAL;
+                track = 3 + r.nextInt(((gameBoard.Y_SIZE - 3) - 3) + 1) + 1;
+            } else if (orientationNum == 1) {
+                orientation = Shape.VERTICAL;
+                track = 3 + r.nextInt(((gameBoard.X_SIZE - 3) - 3) + 1) + 1;
+            }
+
+
+            for (Shape shape : shapes) {
+                if (shape.getOrientation().equals(orientation) && shape.getTrack() == track) {
+                    if (shape.getInitialPos().equals(initialPos)) { // going in the same direction
+                        float normalizedSpeed = shape.getSpeed();
+                        if (normalizedSpeed < 0) {
+                            normalizedSpeed *= (-1);
+                        }
+
+                            if (shape.getOrientation().equals(Shape.HORIZONTAL)) {
+                                if (shape.getSpeed() > 0) { // going right
+                                    if (shape.getX_bottomLeft() < Block.WIDTH) {
+                                        keepGoing = false;
+                                    }
+                                } else if (shape.getSpeed() < 0) { // going left
+                                    if (shape.getX_bottomLeft() + (Block.WIDTH * shape.getBlocks().size()) > (Block.WIDTH * (GameBoard.X_SIZE - 1))) {
+                                        keepGoing = false;
+                                    }
+                                }
+                            } else if (shape.getOrientation().equals(Shape.VERTICAL)) {
+                                if (shape.getSpeed() > 0) { // going up
+                                    if (shape.getY_bottomLeft() < Block.HEIGHT) {
+                                        keepGoing = false;
+                                    }
+                                } else if (shape.getSpeed() < 0) { // going down
+                                    if (shape.getY_bottomLeft() + (Block.HEIGHT * shape.getBlocks().size()) > (Block.HEIGHT * (GameBoard.Y_SIZE - 1))) {
+                                        keepGoing = false;
+                                    }
+                                }
+
+                        }
+
+                        if (speed > normalizedSpeed) {
+                            keepGoing = false;
+                        }
+
+                    } else { // going different directions
+                        keepGoing = false;
+                    }
+
+                }
+            }
+
+            if (retryCount > RETRIES && !keepGoing) {
+                return null;
+            }
+
+            retryCount++;
+        } while (!keepGoing);
 
         int blockCount = Shape.MIN_BLOCK_COUNT + r.nextInt((Shape.MAX_BLOCK_COUNT - Shape.MIN_BLOCK_COUNT) + 1);
 

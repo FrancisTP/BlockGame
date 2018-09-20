@@ -33,6 +33,8 @@ public class BaseLevel extends GameScreenBase {
     GameBoard gameBoard;
     ShapeController shapeController;
 
+    protected int generateShapeCounter;
+    protected int generateShapeSpeed;
 
     // ===================================================================
     // ===================================================================
@@ -46,6 +48,9 @@ public class BaseLevel extends GameScreenBase {
         // READY STATE
         gameBoard = new GameBoard();
         shapeController = new ShapeController(gameBoard);
+
+        generateShapeCounter = 0;
+        generateShapeSpeed = 0;
 
         SoundController.requestSong("Chiptronical.ogg");
     }
@@ -74,18 +79,21 @@ public class BaseLevel extends GameScreenBase {
     protected void updateRunningState(float deltaTime) {
         updateRunningStateBase(deltaTime);
 
+        generateShapeCounter++;
+        if (generateShapeCounter > generateShapeSpeed) {
+            if (shapeController.getShapes().size() < gameBoard.MAX_SHAPE_COUNT) {
+                Random r = new Random();
+                int createBlockNum = 0 + r.nextInt((3 - 0) + 1);
+                boolean createBlock = false;
+                if (createBlockNum == 3) {
+                    createBlock = true;
+                }
 
-        if (shapeController.getShapes().size() < gameBoard.MAX_SHAPE_COUNT) {
-            Random r = new Random();
-            int createBlockNum = 0 + r.nextInt((3 - 0) + 1);
-            boolean createBlock = false;
-            if (createBlockNum == 3) {
-                createBlock = true;
+                if (createBlock) {
+                    shapeController.createNewShape();
+                }
             }
-
-            if (createBlock) {
-                shapeController.createNewShape();
-            }
+            generateShapeCounter = 0;
         }
 
 

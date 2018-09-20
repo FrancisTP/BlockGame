@@ -15,7 +15,7 @@ public class GameBoard {
     public static final int X_SIZE = 8;
     public static final int Y_SIZE = 11;
 
-    public static final int MAX_SHAPE_COUNT = 6;
+    public static final int MAX_SHAPE_COUNT = 8000;
 
     private List<HashMap<Block, List<Date>>> blockMatrix[][];
     /* Format of the blockMatrix
@@ -47,6 +47,7 @@ public class GameBoard {
 
     // RENDER
     public void render(SpriteBatcher batcher) {
+        /*
         batcher.beginBatch(texture);
         float initial_x = 0;
         float initial_y = 0;
@@ -59,5 +60,6 @@ public class GameBoard {
         }
 
         batcher.endBatch();
+        */
     }
 }
