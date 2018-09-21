@@ -48,6 +48,7 @@ public class BaseLevel extends GameScreenBase {
         // READY STATE
         gameBoard = new GameBoard();
         shapeController = new ShapeController(gameBoard);
+        gameBoard.setShapeController(shapeController);
 
         generateShapeCounter = 0;
         generateShapeSpeed = 0;
@@ -79,6 +80,9 @@ public class BaseLevel extends GameScreenBase {
     protected void updateRunningState(float deltaTime) {
         updateRunningStateBase(deltaTime);
 
+        Log.d("UPDATING GAME BOARD", "WHAT");
+        gameBoard.update();
+
         generateShapeCounter++;
         if (generateShapeCounter > generateShapeSpeed) {
             if (shapeController.getShapes().size() < gameBoard.MAX_SHAPE_COUNT) {
@@ -90,14 +94,18 @@ public class BaseLevel extends GameScreenBase {
                 }
 
                 if (createBlock) {
+                    Log.d("CREATING NEW SHAPE", "WHAT");
                     shapeController.createNewShape();
                 }
             }
             generateShapeCounter = 0;
         }
 
-
+        Log.d("UPDATING SHAPES", "WHAT");
         shapeController.update(deltaTime);
+
+        Log.d("CHECKING AND SETTING COLLISIONS FOR SHAPES", "WHAT");
+        gameBoard.checkAndSetCollisions();
     }
 
     // ===================================================================
@@ -208,8 +216,6 @@ public class BaseLevel extends GameScreenBase {
     public void presentSetting(float deltaTime) {
         GL10 gl = glGraphics.getGL();
         setupGl(gl);
-
-        Log.d("This is the presentSetting", " method");
 
         // render here
         backgroundSprite.render(batcher);

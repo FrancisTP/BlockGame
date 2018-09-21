@@ -6,6 +6,7 @@ import com.tp.batman.francis.blockgame.framework.gl.SpriteBatcher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Shape {
 
@@ -173,15 +174,16 @@ public class Shape {
             Log.d("Shape.java: " , "Could not initialize blocks, block count invalid");
             float error = 1/0;
         }
-
+        Random r = new Random();
+        int randColour = 1 + r.nextInt((4 - 1) + 1);
         // set colour
-        if (blockCount == 1) {
+        if (randColour == 1) {
             colour = Block.RED;
-        } else if (blockCount == 2) {
+        } else if (randColour == 2) {
             colour = Block.GREEN;
-        } else if (blockCount == 3) {
+        } else if (randColour == 3) {
             colour = Block.BLUE;
-        } else if (blockCount == 4) {
+        } else if (randColour == 4) {
             colour = Block.ORANGE;
         }
 

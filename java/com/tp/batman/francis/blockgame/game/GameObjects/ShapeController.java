@@ -1,6 +1,7 @@
 package com.tp.batman.francis.blockgame.game.GameObjects;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.tp.batman.francis.blockgame.framework.gl.SpriteBatcher;
 import com.tp.batman.francis.blockgame.game.Screens.GameScreen;
@@ -116,6 +117,9 @@ public class ShapeController {
         Shape newShape = new Shape(orientation, track, initialPos, blockCount, speed);
 
         shapes.add(newShape);
+        gameBoard.calculateShapePositionOnBoard(newShape);
+
+        Log.d("FINISHED CREATING NEW SHAPE", "WHAT");
         return newShape;
     }
 
@@ -127,38 +131,48 @@ public class ShapeController {
 
         List<Shape> shapesToRemove = new ArrayList<>();
         for (Shape shape : shapes) {
-            if (shape.getOrientation().equals(Shape.HORIZONTAL)) {
-                shape.setX_bottomLeft(shape.getX_bottomLeft() + shape.getSpeed());
-
-
-                if (shape.getSpeed() < 0) { // going left
-                    if (shape.getX_bottomLeft() + (Block.WIDTH * shape.getBlocks().size()) + Block.WIDTH < 0) {
-                        shapesToRemove.add(shape);
-                    }
-                } else if (shape.getSpeed() > 0) { // going right
-                    if (shape.getX_bottomLeft() - Block.WIDTH > Block.WIDTH * gameBoard.X_SIZE) {
-                        shapesToRemove.add(shape);
-                    }
-                }
-
-            } else if (shape.getOrientation().equals(Shape.VERTICAL)) {
-                shape.setY_bottomLeft(shape.getY_bottomLeft() + shape.getSpeed());
-
-
-                if (shape.getSpeed() < 0) { // going down
-                    if (shape.getY_bottomLeft() + (Block.HEIGHT * shape.getBlocks().size()) + Block.HEIGHT < 0) {
-                        shapesToRemove.add(shape);
-                    }
-                } else if (shape.getSpeed() > 0) { // going up
-                    if (shape.getY_bottomLeft() - Block.HEIGHT > Block.HEIGHT * gameBoard.Y_SIZE) {
-                        shapesToRemove.add(shape);
-                    }
-                }
+            if (updateShape(shape, deltaTime)) {
+                shapesToRemove.add(shape);
+                gameBoard.removeShapePositions(shape);
             }
 
         }
 
         shapes.removeAll(shapesToRemove);
+        Log.d("FINISHED UPDATING SHAPES", "WHAT");
+    }
+
+    public boolean updateShape(Shape shape, float deltaTime) {
+        if (shape.getOrientation().equals(Shape.HORIZONTAL)) {
+            shape.setX_bottomLeft(shape.getX_bottomLeft() + shape.getSpeed());
+
+
+            if (shape.getSpeed() < 0) { // going left
+                if (shape.getX_bottomLeft() + (Block.WIDTH * shape.getBlocks().size()) + Block.WIDTH < 0) {
+                    return true;
+                }
+            } else if (shape.getSpeed() > 0) { // going right
+                if (shape.getX_bottomLeft() > (Block.WIDTH * gameBoard.X_SIZE) + Block.WIDTH) {
+                    return true;
+                }
+            }
+
+        } else if (shape.getOrientation().equals(Shape.VERTICAL)) {
+            shape.setY_bottomLeft(shape.getY_bottomLeft() + shape.getSpeed());
+
+
+            if (shape.getSpeed() < 0) { // going down
+                if (shape.getY_bottomLeft() + (Block.HEIGHT * shape.getBlocks().size()) + Block.HEIGHT < 0) {
+                    return true;
+                }
+            } else if (shape.getSpeed() > 0) { // going up
+                if (shape.getY_bottomLeft() > Block.HEIGHT * gameBoard.Y_SIZE + Block.HEIGHT) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 
