@@ -17,7 +17,7 @@ public class Shape {
     public static final int MAX_BLOCK_COUNT = 4;
     public static final int MIN_BLOCK_COUNT = 1;
     public static final float MIN_SPEED = 2;
-    public static final float MAX_SPEED = 8;
+    public static final float MAX_SPEED = 7;
 
     private String orientation;
     private List<Block> blocks;

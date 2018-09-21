@@ -14,8 +14,8 @@ public class Block {
     public static final String ORANGE = "ORANGE";
     public static final String BLUE = "BLUE";
 
-    public final static float WIDTH = 100.0f;
-    public final static float HEIGHT = 100.0f;
+    public final static float WIDTH = 80.0f;
+    public final static float HEIGHT = 80.0f;
 
     private float x_bottomLeft;
     private float y_bottomLeft;

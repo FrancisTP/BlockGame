@@ -80,7 +80,6 @@ public class BaseLevel extends GameScreenBase {
     protected void updateRunningState(float deltaTime) {
         updateRunningStateBase(deltaTime);
 
-        Log.d("UPDATING GAME BOARD", "WHAT");
         gameBoard.update();
 
         generateShapeCounter++;
@@ -94,17 +93,14 @@ public class BaseLevel extends GameScreenBase {
                 }
 
                 if (createBlock) {
-                    Log.d("CREATING NEW SHAPE", "WHAT");
                     shapeController.createNewShape();
                 }
             }
             generateShapeCounter = 0;
         }
 
-        Log.d("UPDATING SHAPES", "WHAT");
         shapeController.update(deltaTime);
 
-        Log.d("CHECKING AND SETTING COLLISIONS FOR SHAPES", "WHAT");
         gameBoard.checkAndSetCollisions();
     }
 

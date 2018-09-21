@@ -12,12 +12,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class GameBoard {
 
-    public static final int X_SIZE = 8;
-    public static final int Y_SIZE = 11;
+    public static final int X_SIZE = 10;
+    public static final int Y_SIZE = 14;
 
     public static final int MAX_SHAPE_COUNT = 10;
 
@@ -40,7 +39,9 @@ public class GameBoard {
     public GameBoard() {
         blockMatrix = new ArrayList[X_SIZE][Y_SIZE];
         for (int i=0; i < blockMatrix.length; i++) {
-            Arrays.fill(blockMatrix[i], new ArrayList<>());
+            for (int j=0; j < blockMatrix[i].length; j++) {
+                blockMatrix[i][j] = new ArrayList<>();
+            }
         }
 
         texture = Assets.blocksAssets.blockTexture;
@@ -91,7 +92,6 @@ public class GameBoard {
 
     public void update() {
         frameCounter++;
-        Log.d("FINISHED UPDATING GAME BOARD", "WHAT");
     }
 
 
@@ -145,7 +145,6 @@ public class GameBoard {
             newBlocks.add(block);
         }
         tempShape.setBlocks(newBlocks);
-        Log.d("SHAPE IS " + tempShape.getOrientation(), " AND SPEED " + tempShape.getSpeed());
 
 
         boolean[] isInGameBoardSquareX = new boolean[X_SIZE];
@@ -187,7 +186,6 @@ public class GameBoard {
 
                                 newPositionEntry.put(shape, newPositionList);
                                 blockMatrix[i][tempShape.getTrack()-1].add(newPositionEntry);
-                                Log.d("HORIZONTAL RIGHT: ", "Added start time to block " + i);
                             }
                         }
                         if (tempShape.getX_bottomLeft() > ((i + 1) * Block.WIDTH)) {
@@ -197,8 +195,7 @@ public class GameBoard {
                                 for (Map map : blockMatrix[i][tempShape.getTrack()-1]) {
                                     if (map.containsKey(shape)) {
                                         ((List)map.get(shape)).add(currentFrameCount-1);  // Add the last frame the Shape got out of the block
-                                        Log.d("HORIZONTAL RIGHT: ", "Added end time to block " + i + " list size: " + ((List)map.get(shape)).size());
-                                        break;
+                                         break;
                                     }
                                 }
                             }
@@ -221,7 +218,6 @@ public class GameBoard {
 
                                 newPositionEntry.put(shape, newPositionList);
                                 blockMatrix[i][tempShape.getTrack()-1].add(newPositionEntry);
-                                Log.d("HORIZONTAL LEFT: ", "Added start time to block " + i);
                             }
                         }
                         if ((tempShape.getX_bottomLeft() + (tempShape.getBlocks().size() * Block.WIDTH)) < (i * Block.WIDTH)) {
@@ -231,7 +227,6 @@ public class GameBoard {
                                 for (Map map : blockMatrix[i][tempShape.getTrack()-1]) {
                                     if (map.containsKey(shape)) {
                                         ((List)map.get(shape)).add(currentFrameCount-1);  // Add the last frame the Shape got out of the block
-                                        Log.d("HORIZONTAL LEFT: ", "Added end time to block " + i + " list size: " + ((List)map.get(shape)).size());
                                         break;
                                     }
                                 }
@@ -256,7 +251,6 @@ public class GameBoard {
 
                                 newPositionEntry.put(shape, newPositionList);
                                 blockMatrix[tempShape.getTrack()-1][i].add(newPositionEntry);
-                                Log.d("VERTICAL UP: ", "Added start time to block " + i);
                             }
                         }
                         if (tempShape.getY_bottomLeft() > ((i + 1) * Block.HEIGHT)) {
@@ -266,7 +260,6 @@ public class GameBoard {
                                 for (Map map : blockMatrix[tempShape.getTrack()-1][i]) {
                                     if (map.containsKey(shape)) {
                                         ((List)map.get(shape)).add(currentFrameCount-1);  // Add the last frame the Shape got out of the block
-                                        Log.d("VERTICAL UP: ", "Added end time to block " + i + " list size: " + ((List)map.get(shape)).size());
                                         break;
                                     }
                                 }
@@ -290,9 +283,8 @@ public class GameBoard {
 
 
                                 newPositionEntry.put(shape, newPositionList);
-                                Log.d("ADDING VALUE TO", "[" + (tempShape.getTrack()-1) + "," + i + "]")
-;                                blockMatrix[tempShape.getTrack()-1][i].add(newPositionEntry);
-                                Log.d("VERTICAL DOWN: ", "Added start time to block " + i);
+                                blockMatrix[tempShape.getTrack()-1][i].add(newPositionEntry);
+
                             }
                         }
                         if ((tempShape.getY_bottomLeft() + (tempShape.getBlocks().size() * Block.HEIGHT)) < (i * Block.HEIGHT)) {
@@ -302,7 +294,6 @@ public class GameBoard {
                                 for (Map map : blockMatrix[tempShape.getTrack()-1][i]) {
                                     if (map.containsKey(shape)) {
                                         ((List)map.get(shape)).add(currentFrameCount-1);  // Add the last frame the Shape got out of the block
-                                        Log.d("VERTICAL DOWN: ", "Added end time to block " + i + " list size: " + ((List)map.get(shape)).size());
                                         break;
                                     }
                                 }
@@ -316,7 +307,6 @@ public class GameBoard {
 
             currentFrameCount++;
         }
-        Log.d("FINISHED CALCULATING POSITION FOR SHAPE ON BOARD", "WHAT");
     }
 
     public void removeShapePositions(Shape shape) {
@@ -325,8 +315,20 @@ public class GameBoard {
                 for (Map map : blockMatrix[i][j]) {
                     if (map.containsKey(shape)) {
                         map.remove(shape);
+                        blockMatrix[i][j].remove(map);
+                        //printBlockMatrix();
                         break;
                     }
+                }
+            }
+        }
+    }
+
+    private void printBlockMatrix() {
+        for (int i=0; i < blockMatrix.length; i++) {
+            for (int j=0; j < blockMatrix[i].length; j++ ) {
+                for (Map map : blockMatrix[i][j]) {
+                    Log.d("blockMatrix values: ", "map " + map);
                 }
             }
         }
@@ -353,31 +355,31 @@ public class GameBoard {
                 if (blockMatrix[i][j].size() > 1) {
                     for (int k = 0; k < blockMatrix[i][j].size(); k++) {
                         for (int l = k+1; l < blockMatrix[i][j].size(); l++) {
-                            Map.Entry shapeOneEntry = blockMatrix[i][j].get(k).entrySet().iterator().next();
-                            Shape shapeOne = ((Shape)shapeOneEntry.getKey());
-                            String shapeOneColour = shapeOne.getColour();
-                            List<Integer> shapeOneFrameList = ((List<Integer>)shapeOneEntry.getValue());
-                            int shapeOneFrameEntry = shapeOneFrameList.get(0);
-                            int shapeOneFrameExit = shapeOneFrameList.get(1);
+                                Map.Entry shapeOneEntry = blockMatrix[i][j].get(k).entrySet().iterator().next();
+                                Shape shapeOne = ((Shape) shapeOneEntry.getKey());
+                                String shapeOneColour = shapeOne.getColour();
+                                List<Integer> shapeOneFrameList = ((List<Integer>) shapeOneEntry.getValue());
+                                int shapeOneFrameEntry = shapeOneFrameList.get(0);
+                                int shapeOneFrameExit = shapeOneFrameList.get(1);
 
-                            Map.Entry shapeTwoEntry = blockMatrix[i][j].get(l).entrySet().iterator().next();
-                            Shape shapeTwo = ((Shape)shapeTwoEntry.getKey());
-                            String shapeTwoColour = shapeTwo.getColour();
-                            List<Integer> shapeTwoFrameList = ((List<Integer>)shapeTwoEntry.getValue());
-                            int shapeTwoFrameEntry = shapeTwoFrameList.get(0);
-                            int shapeTwoFrameExit = shapeTwoFrameList.get(1);
+                                Map.Entry shapeTwoEntry = blockMatrix[i][j].get(l).entrySet().iterator().next();
+                                Shape shapeTwo = ((Shape) shapeTwoEntry.getKey());
+                                String shapeTwoColour = shapeTwo.getColour();
+                                List<Integer> shapeTwoFrameList = ((List<Integer>) shapeTwoEntry.getValue());
+                                int shapeTwoFrameEntry = shapeTwoFrameList.get(0);
+                                int shapeTwoFrameExit = shapeTwoFrameList.get(1);
 
-                            if (shapeOneColour.equals(shapeTwoColour)) {
-                                if (frameCounter > shapeOneFrameEntry && frameCounter < shapeOneFrameExit && frameCounter > shapeTwoFrameEntry && frameCounter < shapeTwoFrameExit) {
-                                    shapeOne.setInCollision(true);
-                                    shapeTwo.setInCollision(true);
+                                if (shapeOneColour.equals(shapeTwoColour)) {
+                                    if (frameCounter > shapeOneFrameEntry && frameCounter < shapeOneFrameExit && frameCounter > shapeTwoFrameEntry && frameCounter < shapeTwoFrameExit) {
+                                        shapeOne.setInCollision(true);
+                                        shapeTwo.setInCollision(true);
+                                    }
                                 }
-                            }
+
                         }
                     }
                 }
             }
         }
-        Log.d("FINISHED CHECKING AND SETTING COLLISIONS FOR SHAPES", "WHAT");
     }
 }

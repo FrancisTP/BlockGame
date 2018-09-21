@@ -119,7 +119,6 @@ public class ShapeController {
         shapes.add(newShape);
         gameBoard.calculateShapePositionOnBoard(newShape);
 
-        Log.d("FINISHED CREATING NEW SHAPE", "WHAT");
         return newShape;
     }
 
@@ -139,7 +138,6 @@ public class ShapeController {
         }
 
         shapes.removeAll(shapesToRemove);
-        Log.d("FINISHED UPDATING SHAPES", "WHAT");
     }
 
     public boolean updateShape(Shape shape, float deltaTime) {
