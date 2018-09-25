@@ -3,12 +3,16 @@ package com.tp.batman.francis.blockgame.game.GameObjects;
 import android.util.Log;
 
 import com.tp.batman.francis.blockgame.framework.gl.SpriteBatcher;
+import com.tp.batman.francis.blockgame.framework.math.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Shape {
+
+    public final static int BOUNDS_NOT_TOUCHED = 0;
+    public final static int BOUNDS_TOUCHED = 1;
 
     public static final String VERTICAL = "VERTICAL";
     public static final String HORIZONTAL = "HORIZONTAL";
@@ -28,6 +32,11 @@ public class Shape {
     private boolean inCollision;
     private int track;
     private String initialPos;
+
+    List<Shape> willCollideWith;
+
+    private Rectangle bounds;
+    private int state;
 
     public Shape(String orientation, int track, String initialPos, int blockCount, float speed) {
         this.orientation = orientation;
@@ -76,7 +85,11 @@ public class Shape {
             this.speed = speed;
         }
 
+
+        state = BOUNDS_NOT_TOUCHED;
+
         inCollision = false;
+        willCollideWith = new ArrayList<>();
 
         initializeBlocks(blockCount);
     }
@@ -96,6 +109,8 @@ public class Shape {
     public void setX_bottomLeft(float x_bottomLeft) {
         this.x_bottomLeft = x_bottomLeft;
 
+        bounds.setX(x_bottomLeft, true);
+
         updateBlockXBottomLeft(x_bottomLeft);
     }
 
@@ -105,6 +120,8 @@ public class Shape {
 
     public void setY_bottomLeft(float y_bottomLeft) {
         this.y_bottomLeft = y_bottomLeft;
+
+        bounds.setY(y_bottomLeft, true);
 
         updateBlockYBottomLeft(y_bottomLeft);
     }
@@ -157,6 +174,30 @@ public class Shape {
         this.initialPos = initialPos;
     }
 
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    public void setBounds(Rectangle bounds) {
+        this.bounds = bounds;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public List<Shape> getWillCollideWith() {
+        return willCollideWith;
+    }
+
+    public void setWillCollideWith(List<Shape> willCollideWith) {
+        this.willCollideWith = willCollideWith;
+    }
+
     //=============================================================
     // update methods
     //=============================================================
@@ -194,6 +235,10 @@ public class Shape {
                 initializedBlocks.add(newBlock);
             }
 
+            // bounds
+            bounds = new Rectangle(x_bottomLeft, y_bottomLeft, Block.WIDTH * blockCount, Block.HEIGHT, true);
+
+
         } else if(orientation.equals(VERTICAL)) {
 
             for (int i=0; i<blockCount; i++) {
@@ -201,10 +246,15 @@ public class Shape {
                 initializedBlocks.add(newBlock);
             }
 
+            // bounds
+            bounds = new Rectangle(x_bottomLeft, y_bottomLeft, Block.WIDTH, Block.HEIGHT * blockCount, true);
+
         } else {
             Log.d("Shape.java: " , "Could not initialize blocks, invalid orientation");
             float error = 1/0;
         }
+
+
 
         blocks = initializedBlocks;
     }

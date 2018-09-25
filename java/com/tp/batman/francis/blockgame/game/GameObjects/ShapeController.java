@@ -3,8 +3,15 @@ package com.tp.batman.francis.blockgame.game.GameObjects;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.tp.batman.francis.blockgame.framework.Input;
+import com.tp.batman.francis.blockgame.framework.gl.Camera2D;
 import com.tp.batman.francis.blockgame.framework.gl.SpriteBatcher;
+import com.tp.batman.francis.blockgame.framework.math.OverlapTester;
+import com.tp.batman.francis.blockgame.framework.math.Vector2;
 import com.tp.batman.francis.blockgame.game.Screens.GameScreen;
+import com.tp.batman.francis.blockgame.game.Screens.LoadingScreen;
+import com.tp.batman.francis.blockgame.game.Settings.SoundController;
+import com.tp.batman.francis.blockgame.game.Sprites.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -171,6 +178,64 @@ public class ShapeController {
         }
 
         return false;
+    }
+
+
+    // ###################################################################
+    // TOUCH EVENTS
+    // ###################################################################
+
+    public void listenToTouches(List<Input.TouchEvent> touchEvents, Camera2D guiCam, Vector2 touchPoint){
+        int len = touchEvents.size();
+
+
+        for(int i=0; i<len; i++){
+            Input.TouchEvent event = touchEvents.get(i);
+
+            List<Shape> shapesToRemove = new ArrayList<>();
+
+            for (Shape shape : shapes) {
+                if (event.type == Input.TouchEvent.TOUCH_UP) {
+                    touchPoint.set(event.x, event.y);
+                    guiCam.touchToWorld(touchPoint);
+
+                    shape.setState(Shape.BOUNDS_NOT_TOUCHED);
+
+                    if (OverlapTester.pointInRectangle(shape.getBounds(), touchPoint)) {
+                        // touch up shape
+                        if (shape.isInCollision()) {
+                            Log.d("DELETED BLOCK: ", " AVOIDED A COLLISION!");
+                        } else {
+                            Log.d("DELETED BLOCK: ", " KILLED AN INNOCENT BLOCK :(");
+                        }
+                        shapesToRemove.add(shape);
+                        gameBoard.removeShapePositions(shape);
+                    }
+
+
+                }
+                if (event.type == Input.TouchEvent.TOUCH_DOWN) {
+                    touchPoint.set(event.x, event.y);
+                    guiCam.touchToWorld(touchPoint);
+
+                    if (OverlapTester.pointInRectangle(shape.getBounds(), touchPoint)) {
+                        // touch down shape
+                    }
+
+
+                }
+                if (event.type == Input.TouchEvent.TOUCH_DRAGGED) {
+                    touchPoint.set(event.x, event.y);
+                    guiCam.touchToWorld(touchPoint);
+
+                    if (!OverlapTester.pointInRectangle(shape.getBounds(), touchPoint)) {
+                        // touch drag shape
+                    }
+                }
+            }
+
+            shapes.removeAll(shapesToRemove);
+        }
     }
 
 

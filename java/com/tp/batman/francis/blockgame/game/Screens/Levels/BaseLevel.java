@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.tp.batman.francis.blockgame.framework.Game;
+import com.tp.batman.francis.blockgame.framework.Input;
 import com.tp.batman.francis.blockgame.game.Assets.Assets;
 import com.tp.batman.francis.blockgame.game.GameObjects.GameBoard;
 import com.tp.batman.francis.blockgame.game.GameObjects.GameBoard_old;
@@ -12,6 +13,7 @@ import com.tp.batman.francis.blockgame.game.Screens.Levels.Base.GameScreenBase;
 import com.tp.batman.francis.blockgame.game.Settings.SoundController;
 import com.tp.batman.francis.blockgame.game.Sprites.Sprite;
 
+import java.util.List;
 import java.util.Random;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -64,7 +66,13 @@ public class BaseLevel extends GameScreenBase {
     // LISTENING TO TOUCHES
     // ###################################################################
 
+    @Override
+    protected void listenToTouchesRunningState(List<Input.TouchEvent> touchEvents, float deltaTime) {
+        listenToTouchesRunningStateBase(touchEvents, deltaTime);
 
+        Log.d("whwhwhwhwhw", "wjwjwjwjwjwjwj");
+        shapeController.listenToTouches(touchEvents, guiCam, touchPoint);
+    }
 
     // ===================================================================
     // ===================================================================

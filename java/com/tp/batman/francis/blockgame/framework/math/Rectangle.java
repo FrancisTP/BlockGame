@@ -13,6 +13,22 @@ public class Rectangle {
 		this.height = height;
 	}
 
+	public Rectangle(float x, float y, float width, float height, boolean useBottomLeft) {
+		if (true) {
+			this.lowerLeft = new Vector2(x, y);
+			this.x = x + (width / 2);
+			this.y = y + (height / 2);
+			this.width = width;
+			this.height = height;
+		} else {
+			this.lowerLeft = new Vector2(x - width/2, y - height/2);
+			this.x = x;
+			this.y = y;
+			this.width = width;
+			this.height = height;
+		}
+	}
+
 	public Vector2 getLowerLeft() {
 		return lowerLeft;
 	}
@@ -41,6 +57,8 @@ public class Rectangle {
 
 	public void setX(float x) {
 		this.x = x;
+		lowerLeft.x = x - (width / 2);
+		//this.lowerLeft = new Vector2(x - width/2, y - height/2);
 	}
 
 	public float getY() {
@@ -49,5 +67,17 @@ public class Rectangle {
 
 	public void setY(float y) {
 		this.y = y;
+		lowerLeft.y = y - (height / 2);
+	}
+
+	public void setX(float x, boolean useBottomLeft) {
+		this.x = x;
+		lowerLeft.x = x;
+		//this.lowerLeft = new Vector2(x - width/2, y - height/2);
+	}
+
+	public void setY(float y, boolean useBottomLeft) {
+		this.y = y;
+		lowerLeft.y = y;
 	}
 }

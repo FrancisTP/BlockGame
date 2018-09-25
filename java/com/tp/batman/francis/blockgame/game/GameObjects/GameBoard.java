@@ -195,7 +195,9 @@ public class GameBoard {
                                 for (Map map : blockMatrix[i][tempShape.getTrack()-1]) {
                                     if (map.containsKey(shape)) {
                                         ((List)map.get(shape)).add(currentFrameCount-1);  // Add the last frame the Shape got out of the block
-                                         break;
+                                        // HERE SET COLLISIONS
+
+                                        break;
                                     }
                                 }
                             }
@@ -227,6 +229,8 @@ public class GameBoard {
                                 for (Map map : blockMatrix[i][tempShape.getTrack()-1]) {
                                     if (map.containsKey(shape)) {
                                         ((List)map.get(shape)).add(currentFrameCount-1);  // Add the last frame the Shape got out of the block
+                                        // HERE SET COLLISIONS
+
                                         break;
                                     }
                                 }
@@ -260,6 +264,8 @@ public class GameBoard {
                                 for (Map map : blockMatrix[tempShape.getTrack()-1][i]) {
                                     if (map.containsKey(shape)) {
                                         ((List)map.get(shape)).add(currentFrameCount-1);  // Add the last frame the Shape got out of the block
+                                        // HERE SET COLLISIONS
+
                                         break;
                                     }
                                 }
@@ -294,6 +300,73 @@ public class GameBoard {
                                 for (Map map : blockMatrix[tempShape.getTrack()-1][i]) {
                                     if (map.containsKey(shape)) {
                                         ((List)map.get(shape)).add(currentFrameCount-1);  // Add the last frame the Shape got out of the block
+                                        // HERE SET COLLISIONS
+
+                                        if (blockMatrix[tempShape.getTrack()-1][i].size() > 1) {
+                                            for (int k = 0; k < blockMatrix[tempShape.getTrack()-1][i].size(); k++) {
+                                                for (int l = k + 1; l < blockMatrix[tempShape.getTrack()-1][i].size(); l++) {
+
+                                                    Map.Entry shapeOneEntry = blockMatrix[tempShape.getTrack()-1][i].get(k).entrySet().iterator().next();
+                                                    Shape shapeOne = ((Shape) shapeOneEntry.getKey());
+                                                    String shapeOneColour = shapeOne.getColour();
+                                                    List<Integer> shapeOneFrameList = ((List<Integer>) shapeOneEntry.getValue());
+                                                    int shapeOneFrameEntry = shapeOneFrameList.get(0);
+                                                    int shapeOneFrameExit = shapeOneFrameList.get(1);
+
+                                                    Map.Entry shapeTwoEntry = blockMatrix[tempShape.getTrack()-1][i].get(l).entrySet().iterator().next();
+                                                    Shape shapeTwo = ((Shape) shapeTwoEntry.getKey());
+                                                    String shapeTwoColour = shapeTwo.getColour();
+                                                    List<Integer> shapeTwoFrameList = ((List<Integer>) shapeTwoEntry.getValue());
+                                                    int shapeTwoFrameEntry = shapeTwoFrameList.get(0);
+                                                    int shapeTwoFrameExit = shapeTwoFrameList.get(1);
+
+                                                    if (shapeOneColour.equals(shapeTwoColour)) {
+                                                        if ((shapeOneFrameEntry >= shapeTwoFrameEntry && shapeOneFrameEntry <= shapeTwoFrameExit) || (shapeTwoFrameEntry >= shapeOneFrameEntry && shapeTwoFrameEntry <= shapeOneFrameExit)) {
+                                                            // THESE TWO SHAPES COLLIDE
+                                                            if (!shapeOne.getWillCollideWith().contains(shapeTwo)) {
+                                                                shapeOne.getWillCollideWith().add(shapeTwo);
+                                                            }
+                                                            if (!shapeTwo.getWillCollideWith().contains(shapeOne)) {
+                                                                shapeTwo.getWillCollideWith().add(shapeOne);
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        /*
+                                        if (blockMatrix[i][j].size() > 1) {
+                                            for (int k = 0; k < blockMatrix[i][j].size(); k++) {
+                                                for (int l = k+1; l < blockMatrix[i][j].size(); l++) {
+                                                        Map.Entry shapeOneEntry = blockMatrix[i][j].get(k).entrySet().iterator().next();
+                                                        Shape shapeOne = ((Shape) shapeOneEntry.getKey());
+                                                        String shapeOneColour = shapeOne.getColour();
+                                                        List<Integer> shapeOneFrameList = ((List<Integer>) shapeOneEntry.getValue());
+                                                        int shapeOneFrameEntry = shapeOneFrameList.get(0);
+                                                        int shapeOneFrameExit = shapeOneFrameList.get(1);
+
+                                                        Map.Entry shapeTwoEntry = blockMatrix[i][j].get(l).entrySet().iterator().next();
+                                                        Shape shapeTwo = ((Shape) shapeTwoEntry.getKey());
+                                                        String shapeTwoColour = shapeTwo.getColour();
+                                                        List<Integer> shapeTwoFrameList = ((List<Integer>) shapeTwoEntry.getValue());
+                                                        int shapeTwoFrameEntry = shapeTwoFrameList.get(0);
+                                                        int shapeTwoFrameExit = shapeTwoFrameList.get(1);
+
+                                                        if (shapeOneColour.equals(shapeTwoColour)) {
+                                                            if (frameCounter > shapeOneFrameEntry && frameCounter < shapeOneFrameExit && frameCounter > shapeTwoFrameEntry && frameCounter < shapeTwoFrameExit) {
+                                                                shapeOne.setInCollision(true);
+                                                                shapeTwo.setInCollision(true);
+                                                            }
+                                                        }
+
+                                                }
+                                            }
+                                        }
+                                         */
+
+
                                         break;
                                     }
                                 }
