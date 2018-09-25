@@ -514,7 +514,7 @@ public class GameBoard {
                                 int shapeTwoFrameExit = shapeTwoFrameList.get(1);
 
                                 if (shapeOneColour.equals(shapeTwoColour)) {
-                                    if (frameCounter > shapeOneFrameEntry && frameCounter < shapeOneFrameExit && frameCounter > shapeTwoFrameEntry && frameCounter < shapeTwoFrameExit) {
+                                    if (frameCounter >= shapeOneFrameEntry && frameCounter <= shapeOneFrameExit && frameCounter >= shapeTwoFrameEntry && frameCounter <= shapeTwoFrameExit) {
                                         shapeOne.setInCollision(true);
                                         shapeTwo.setInCollision(true);
                                     }
