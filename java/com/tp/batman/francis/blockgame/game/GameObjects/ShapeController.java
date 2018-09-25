@@ -203,7 +203,14 @@ public class ShapeController {
 
                     if (OverlapTester.pointInRectangle(shape.getBounds(), touchPoint)) {
                         // touch up shape
-                        if (shape.isInCollision()) {
+                        if (shape.getWillCollideWith().size() > 0) {
+
+                            for (Shape shapeRemoveCollision : shape.getWillCollideWith()) {
+                                if (shapeRemoveCollision.getWillCollideWith().contains(shape)) {
+                                    shapeRemoveCollision.getWillCollideWith().remove(shape);
+                                }
+                            }
+
                             Log.d("DELETED BLOCK: ", " AVOIDED A COLLISION!");
                         } else {
                             Log.d("DELETED BLOCK: ", " KILLED AN INNOCENT BLOCK :(");
